@@ -55,7 +55,7 @@
   var revealTargets = document.querySelectorAll(
     ".section-body, .funnel-title, .funnel-row, .deliv-plate, .who-card, " +
     ".team-card, .pilot-stat, .statement-h, .statement-cols p, .closing-inner, " +
-    ".fired-list li, .included-list li, .faq-list details, .logo-row span, .mid-cta"
+    ".fired-card, .fact-chip, .included-panel, .faq-list details, .logo-row span, .mid-cta"
   );
   revealTargets.forEach(function (el) { el.classList.add("reveal"); });
 
