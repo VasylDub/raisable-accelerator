@@ -485,7 +485,7 @@ h3 { font-size: 1.2rem; line-height: 1.3; }
   background: #E7F5EE;
   border-radius: 12px;
   padding: clamp(24px, 2.5vw, 34px);
-  aspect-ratio: 1 / 1;
+  min-height: 200px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -852,7 +852,7 @@ h3 { font-size: 1.2rem; line-height: 1.3; }
   .pilot-stats { grid-template-columns: 1fr 1fr; }
   .all-stats { grid-template-columns: 1fr 1fr; }
   .deliv-grid { grid-template-columns: 1fr 1fr; }
-  .deliv-plate { aspect-ratio: auto; min-height: 220px; }
+  .deliv-plate { min-height: 180px; }
   .funnel-row {
     grid-template-columns: 1fr;
     gap: 6px;
