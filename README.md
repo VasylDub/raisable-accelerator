@@ -1,8 +1,14 @@
 # Raisable — Accelerator-as-a-Service landing page
 
-Single-page static site. No build step — deploy the `site/` folder as-is
-(Netlify, Vercel, Cloudflare Pages, or any static host). Suggested domain:
-`accelerator.raisable.vc`.
+Single-page static site, no build step.
+
+**Deployed:** GitHub Pages from https://github.com/VasylDub/raisable-accelerator
+(branch `main`, root). Custom domain `accelerator.raisable.vc` via the `CNAME`
+file. To publish changes: commit and `git push` — Pages redeploys automatically.
+
+DNS (GoDaddy): `accelerator` CNAME → `vasyldub.github.io`. After the first
+deploy with DNS live, enable "Enforce HTTPS" in the repo's Pages settings once
+the certificate is issued.
 
 ## Structure
 
