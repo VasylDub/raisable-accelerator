@@ -30,11 +30,48 @@
     ).observe(hero);
   }
 
+  /* ---------- Mobile menu ---------- */
+  var navToggle = document.querySelector(".nav-toggle");
+  if (nav && navToggle) {
+    navToggle.addEventListener("click", function () {
+      var open = nav.classList.toggle("is-open");
+      navToggle.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+    nav.querySelectorAll(".nav-links a").forEach(function (link) {
+      link.addEventListener("click", function () {
+        nav.classList.remove("is-open");
+        navToggle.setAttribute("aria-expanded", "false");
+      });
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && nav.classList.contains("is-open")) {
+        nav.classList.remove("is-open");
+        navToggle.setAttribute("aria-expanded", "false");
+      }
+    });
+  }
+
   /* ---------- Reveal + count-up on scroll ---------- */
   var revealTargets = document.querySelectorAll(
-    ".section-body, .funnel, .deliverables, .who-grid, .team-grid, .statement-h, .statement-cols, .closing-inner"
+    ".section-body, .funnel-title, .funnel-row, .deliv-plate, .who-card, " +
+    ".team-card, .pilot-stat, .statement-h, .statement-cols p, .closing-inner, " +
+    ".fired-list li, .included-list li, .faq-list details, .logo-row span, .mid-cta"
   );
   revealTargets.forEach(function (el) { el.classList.add("reveal"); });
+
+  // Stagger siblings: each reveal element waits a beat after the previous
+  // one in the same parent, so grids cascade instead of popping at once.
+  var groups = new Map();
+  revealTargets.forEach(function (el) {
+    var siblings = groups.get(el.parentElement) || [];
+    siblings.push(el);
+    groups.set(el.parentElement, siblings);
+  });
+  groups.forEach(function (siblings) {
+    siblings.forEach(function (el, i) {
+      el.style.setProperty("--reveal-delay", Math.min(i * 0.09, 0.45) + "s");
+    });
+  });
 
   function countUp(el) {
     var target = parseInt(el.getAttribute("data-count"), 10);
@@ -46,7 +83,7 @@
       if (!start) start = ts;
       var p = Math.min((ts - start) / duration, 1);
       var eased = 1 - Math.pow(1 - p, 3);
-      el.textContent = prefix + Math.round(target * eased) + suffix;
+      el.textContent = prefix + Math.round(target * eased).toLocaleString("en-US") + suffix;
       if (p < 1) requestAnimationFrame(step);
     }
     requestAnimationFrame(step);

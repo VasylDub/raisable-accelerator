@@ -22,11 +22,10 @@
 
   <header class="nav" id="nav">
     <div class="nav-inner">
-      <a class="nav-logo" href="#top" aria-label="Raisable Founders Hub — home">
-        <img class="logo-white" src="assets/img/logo-white.svg" alt="Raisable Founders Hub" width="228" height="21">
-        <img class="logo-classic" src="assets/img/logo-classic.svg" alt="Raisable Founders Hub" width="228" height="21">
+      <a class="nav-logo" href="#top" aria-label="Raisable — home">
+        <img src="assets/img/logo.png" alt="Raisable" width="122" height="28">
       </a>
-      <nav class="nav-links" aria-label="Page sections">
+      <nav class="nav-links" id="nav-menu" aria-label="Page sections">
         <a href="#how">How it works</a>
         <a href="#deliverables">What you get</a>
         <a href="#track-record">Track record</a>
@@ -34,6 +33,9 @@
         <a href="#faq">FAQ</a>
       </nav>
       <button class="btn btn-nav" type="button" data-open-form>Talk to us</button>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="Menu">
+        <span></span><span></span>
+      </button>
     </div>
   </header>
 
@@ -185,36 +187,31 @@
           <h2>A customer acquisition engine, <em>not a sponsorship.</em></h2>
         </div>
       </div>
-      <div class="deliverables">
-        <div class="deliv-head" aria-hidden="true">
-          <span>Deliverable</span><span>The outcome it drives</span>
-        </div>
-        <dl class="deliv-table">
-          <div class="deliv-row">
-            <dt>Curated startup pipeline</dt>
-            <dd>700+ applications filtered to 20–40 startups matched to your ICP — you approve the shortlist</dd>
-          </div>
-          <div class="deliv-row">
-            <dt>Early customer acquisition</dt>
-            <dd>Startups onboard onto your product during the program, pre-Series A, while switching cost is zero</dd>
-          </div>
-          <div class="deliv-row">
-            <dt>Product feedback loop</dt>
-            <dd>The cohort beta-tests your launches; direct feedback from your exact target segment</dd>
-          </div>
-          <div class="deliv-row">
-            <dt>Brand credibility with founders &amp; VCs</dt>
-            <dd>Founders post organically about the program throughout the cohort; your brand associated with founder support, not sales pressure</dd>
-          </div>
-          <div class="deliv-row">
-            <dt>Private office hours</dt>
-            <dd>Structured 1:1 warm introductions between your team and cohort founders</dd>
-          </div>
-          <div class="deliv-row">
-            <dt>Demo Day access</dt>
-            <dd>Exclusive sponsor presence in front of 50+ VCs — at the exact moment startups decide on key vendors</dd>
-          </div>
-        </dl>
+      <div class="deliv-grid">
+        <article class="deliv-plate">
+          <h3>Curated startup pipeline</h3>
+          <p>700+ applications filtered to 20–40 startups matched to your ICP — you approve the shortlist.</p>
+        </article>
+        <article class="deliv-plate">
+          <h3>Early customer acquisition</h3>
+          <p>Startups onboard onto your product during the program, pre-Series A, while switching cost is zero.</p>
+        </article>
+        <article class="deliv-plate">
+          <h3>Product feedback loop</h3>
+          <p>The cohort beta-tests your launches; direct feedback from your exact target segment.</p>
+        </article>
+        <article class="deliv-plate">
+          <h3>Brand credibility with founders &amp; VCs</h3>
+          <p>Founders post organically about the program throughout the cohort; your brand associated with founder support, not sales pressure.</p>
+        </article>
+        <article class="deliv-plate">
+          <h3>Private office hours</h3>
+          <p>Structured 1:1 warm introductions between your team and cohort founders.</p>
+        </article>
+        <article class="deliv-plate">
+          <h3>Demo Day access</h3>
+          <p>Exclusive sponsor presence in front of 50+ VCs — at the exact moment startups decide on key vendors.</p>
+        </article>
       </div>
       <div class="mid-cta">
         <button class="btn btn-primary" type="button" data-open-form>Talk to us</button>
@@ -244,10 +241,26 @@
               <span>onboarded onto the sponsor's product with credits</span>
             </div>
           </div>
-          <p class="quiet">Co-partners secured: <strong>HubSpot, Stripe, Oyster.</strong></p>
           <hr class="rule">
           <p class="quiet">Across all programs our team has led:</p>
-          <p class="allprograms">1,500+ applications received&ensp;·&ensp;250+ startups accepted&ensp;·&ensp;$2.5B+ raised&ensp;·&ensp;100+ VCs in the Demo Day network</p>
+          <div class="pilot-stats all-stats">
+            <div class="pilot-stat">
+              <strong><span data-count="1500" data-suffix="+">1,500+</span></strong>
+              <span>applications received</span>
+            </div>
+            <div class="pilot-stat">
+              <strong><span data-count="250" data-suffix="+">250+</span></strong>
+              <span>startups accepted</span>
+            </div>
+            <div class="pilot-stat">
+              <strong>$2.5B+</strong>
+              <span>raised</span>
+            </div>
+            <div class="pilot-stat">
+              <strong><span data-count="100" data-suffix="+">100+</span></strong>
+              <span>VCs in the Demo Day network</span>
+            </div>
+          </div>
           <div class="logo-row" role="group" aria-label="Organizations our team has built for and partnered with">
             <span>Sequoia</span><span>Accel</span><span>Index</span><span>Lightspeed</span>
             <span>n8n</span><span>Cohere</span><span>Clay</span>
@@ -407,11 +420,9 @@
 
   <footer class="footer">
     <div class="footer-inner">
-      <img src="assets/img/logo-white.svg" alt="Raisable Founders Hub" width="217" height="20">
+      <img src="assets/img/logo.png" alt="Raisable" width="113" height="26">
       <p class="footer-tag">White-label, equity-free accelerators — designed, built, and run for you.</p>
       <div class="footer-links">
-        <a href="mailto:og@raisable.vc">og@raisable.vc</a>
-        <a href="https://t.me/vsdub" rel="noopener">Telegram @vsdub</a>
         <a href="https://raisable.vc" rel="noopener">raisable.vc</a>
       </div>
       <p class="footer-fine">© 2026 Raisable. Silicon Valley, CA — 37.44°N.</p>
@@ -420,7 +431,7 @@
 
   <dialog class="form-modal" id="form-modal" aria-labelledby="form-modal-title">
     <button class="modal-close" type="button" data-close-form aria-label="Close">×</button>
-    <form class="lead-form" id="lead-form" action="https://formspree.io/f/REPLACE_WITH_FORM_ID" method="POST" novalidate>
+    <form class="lead-form" id="lead-form" action="https://formspree.io/f/mrewovpk" method="POST" novalidate>
       <h3 class="form-title" id="form-modal-title">Talk to us</h3>
       <p class="form-sub">Tell us your ICP and your goal — we'll get back to you within one
         business day.</p>
