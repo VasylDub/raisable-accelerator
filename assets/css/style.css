@@ -1372,3 +1372,27 @@ h3 { font-size: 1.2rem; line-height: 1.3; }
   filter: grayscale(1);
   opacity: 0.75;
 }
+
+/* ---------- Doc updates 2026-07-11 ---------- */
+/* hero numbers disclaimer */
+.proof-disclaimer {
+  flex-basis: 100%;
+  width: 100%;
+  margin-top: 10px;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  color: rgba(248, 249, 246, 0.55);
+  font-style: italic;
+}
+/* track-record logo row: brand marks next to the names */
+.logo-row span { display: inline-flex; align-items: center; gap: 8px; }
+.logo-row img {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  border-radius: 4px;
+  filter: grayscale(1);
+  opacity: 0.8;
+}
+.logo-row span:hover img { filter: none; opacity: 1; }
