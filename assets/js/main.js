@@ -116,6 +116,9 @@
   if (modal) {
     document.querySelectorAll("[data-open-form]").forEach(function (btn) {
       btn.addEventListener("click", function () {
+        if (window.gtag) gtag("event", "form_open", { site: "accelerator" });
+      });
+      btn.addEventListener("click", function () {
         modal.showModal();
         var first = document.getElementById("f-name");
         if (first) first.focus();
@@ -145,6 +148,7 @@
 
   if (form) {
     form.addEventListener("submit", function (e) {
+      if (window.gtag) gtag("event", "form_submit", { site: "accelerator" });
       e.preventDefault();
 
       // Native-style validation with visible marking
