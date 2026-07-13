@@ -960,3 +960,415 @@ h3 { font-size: 1.2rem; line-height: 1.3; }
   .btn, .faq-list summary::after { transition: none; }
   .form-modal[open], .form-modal[open]::backdrop { animation: none; }
 }
+/* ================================================================
+   PORTED FROM raisable.vc MAIN SITE — Team/Advisors cards with
+   framed member panels, border trace, 3D cube mosaic, mobile
+   connected card. Keep in sync with the main site.
+   ================================================================ */
+:root {
+  --plate: #E7F5EE;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.team-grid-4 { grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.team-grid-4 .team-card { max-width: none; padding-top: 18px; }
+.team-grid-4 .team-photo { width: 96px; height: 96px; margin-bottom: 14px; }
+.team-grid-4 h3 { font-size: 1.12rem; }
+.team-grid-4 .team-role { font-size: 0.72rem; margin-bottom: 0.7rem; }
+.team-grid-4 .team-card > p:not(.team-role) { font-size: 0.87rem; line-height: 1.55; }
+
+/* badges are links now */
+.team-exp a {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: var(--teal-ink);
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 4px 12px;
+  transition: border-color 0.18s ease, color 0.18s ease;
+}
+.team-exp a:hover { border-color: var(--teal); color: var(--ink); text-decoration: none; }
+
+
+/* mobile: 2-up people grid (sharper photos) */
+@media (max-width: 560px) {
+  .team-grid-4 { grid-template-columns: repeat(2, 1fr); gap: 20px 12px; }
+  .team-grid-4 h3 { font-size: 1rem; }
+  .team-grid-4 .team-role { font-size: 0.66rem; }
+}
+
+/* mentor-style portraits: full-width squares, duotone, color on hover */
+.team-grid-4 .team-photo {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 8px;
+  filter: grayscale(1) contrast(1.05) brightness(1.02);
+  transition: filter 0.35s ease;
+  margin-bottom: 14px;
+}
+.team-grid-4 .team-photo-ai { filter: none; background: var(--plate); }
+/* whenever the framed panel is active (hover OR tap), cards keep only
+   name + role; the rest lives in the panel. Scope to the card's own
+   children so the panel's cloned badges (also inside the grid) still show. */
+.member-panels-on .team-grid-4 .team-card > p:not(.team-role),
+.member-panels-on .team-grid-4 .team-card > .team-exp { display: none; }
+.member-panels-on .team-grid-4 .team-card { cursor: pointer; }
+
+@media (hover: hover) and (pointer: fine) {
+  .team-grid-4 .team-card:hover .team-photo { filter: none; }
+
+  /* ambassadors react to the pointer */
+  .amb-float { transition: border-color 0.2s ease, box-shadow 0.2s ease; cursor: pointer; }
+  .amb-float:hover {
+    border-color: var(--teal);
+    box-shadow: 0 14px 32px rgba(0, 189, 151, 0.28);
+    animation-play-state: paused;
+  }
+  .amb-float:hover img { filter: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spotlight, .spotlight-card { transition: opacity 0.15s ease; }
+  .spotlight-card { transform: none; }
+}
+
+/* ============================================================
+   Round-22: "Team" title · member panel replaces the full-screen
+   spotlight — info appears below the card, floating above the
+   page, no scrim/blur. (.spotlight styles above are now unused.)
+   ============================================================ */
+
+.team-grid-4 { position: relative; }
+
+.member-panel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: clamp(20px, 2.5vw, 30px);
+  box-shadow: 0 24px 60px rgba(10, 38, 33, 0.18);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(6px);
+  transition:
+    opacity 0.2s var(--ease-out),
+    transform 0.2s var(--ease-out),
+    visibility 0.2s;
+}
+.member-panel.is-on {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+.panel-head {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+.panel-head h3 { font-size: 1.25rem; letter-spacing: -0.02em; }
+.panel-role {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--teal-ink);
+}
+.panel-bio {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--ink);
+  max-width: 78ch;
+}
+.panel-tags { margin-top: 14px; }
+/* the cloned badge row must escape the desktop name+role-only hiding */
+.member-panel .team-exp {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .member-panel { transform: none; transition: opacity 0.15s ease, visibility 0.15s; }
+}
+
+/* ============================================================
+   Round-23: panel prototype refinements — photo zooms ≤5%
+   inside its frame; panel is card-width, reads as one card.
+   ============================================================ */
+
+.team-photo-wrap {
+  display: block;
+  overflow: hidden;   /* the zoom stays inside the frame */
+  border-radius: 8px;
+  aspect-ratio: 1;
+  margin-bottom: 14px;
+}
+.team-photo-wrap .team-photo {
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  margin-bottom: 0;
+  transition: filter 0.35s ease, transform 0.45s var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  [data-member-panel]:hover .team-photo { transform: scale(1.05); }
+}
+
+/* card-width panel: one column, attached under the card */
+.member-panel {
+  left: auto;
+  right: auto;
+  padding: 16px 18px 18px;
+  border-radius: 12px;
+}
+.panel-head { gap: 10px; margin-bottom: 8px; }
+.panel-head h3 { font-size: 1.1rem; }
+.panel-role { font-size: 0.66rem; }
+.panel-bio { font-size: 0.87rem; line-height: 1.6; }
+.panel-tags { margin-top: 12px; }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-member-panel]:hover .team-photo { transform: none; }
+}
+
+/* ============================================================
+   Round-24: one-frame member card — the panel is a backdrop
+   frame enclosing photo+name+role, with bio+badges below inside
+   the same frame. No name/role repetition. (.panel-head unused.)
+   ============================================================ */
+
+[data-member-panel] { position: relative; z-index: 21; } /* card paints above its frame */
+
+.member-panel {
+  z-index: 20;
+  border-radius: 14px;
+  padding: 14px; /* sides + bottom; top is set by JS to clear the card */
+}
+
+/* zoom + color keyed to the open state, so they hold while
+   the pointer is down in the details area of the frame */
+.is-spot .team-photo {
+  transform: scale(1.05);
+  filter: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .is-spot .team-photo { transform: none; }
+}
+
+/* ============================================================
+   Round-25: premium frame entrance — a teal dot traces the
+   perimeter; when the square completes, the border stays
+   premium green with a soft traveling shimmer.
+   ============================================================ */
+
+.panel-trace {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+}
+.panel-trace rect { fill: none; }
+
+/* the drawn border line */
+.tr-line {
+  stroke: var(--teal);
+  stroke-width: 1.5;
+  stroke-dasharray: 100 100;
+  stroke-dashoffset: 100;
+}
+.member-panel.is-on .tr-line {
+  animation: tr-draw 0.9s cubic-bezier(0.45, 0, 0.2, 1) 0.12s forwards;
+}
+@keyframes tr-draw { to { stroke-dashoffset: 0; } }
+
+/* the dot riding the drawing tip */
+.tr-dot {
+  stroke: var(--teal);
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-dasharray: 0.6 99.4;
+  stroke-dashoffset: 100;
+  opacity: 0;
+  filter: drop-shadow(0 0 5px rgba(0, 189, 151, 0.85));
+}
+.member-panel.is-on .tr-dot {
+  animation: tr-dot-run 0.9s cubic-bezier(0.45, 0, 0.2, 1) 0.12s forwards;
+}
+@keyframes tr-dot-run {
+  0%   { stroke-dashoffset: 100; opacity: 0; }
+  4%   { opacity: 1; }
+  88%  { opacity: 1; }
+  100% { stroke-dashoffset: 0; opacity: 0; }
+}
+
+/* once complete: a soft light glides around the green frame */
+.tr-shine {
+  stroke: rgba(255, 255, 255, 0.85);
+  stroke-width: 1.5;
+  stroke-dasharray: 12 88;
+  opacity: 0;
+}
+.member-panel.is-on .tr-shine {
+  animation: tr-shimmer 3.6s linear 1.15s infinite;
+}
+@keyframes tr-shimmer {
+  0%   { stroke-dashoffset: 100; opacity: 0; }
+  12%  { opacity: 0.75; }
+  88%  { opacity: 0.75; }
+  100% { stroke-dashoffset: 0; opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .member-panel.is-on .tr-line { animation: none; stroke-dashoffset: 0; }
+  .tr-dot, .tr-shine { display: none; }
+}
+
+/* ============================================================
+   Round-27: stacking fix — an open frame must float above ALL
+   other cards (incl. the next grid's row below). Idle cards sit
+   at natural stacking; only the active pair gets lifted.
+   ============================================================ */
+
+[data-member-panel] { z-index: auto; }            /* undo the blanket z21 */
+.member-panel.is-on { z-index: 40; }              /* frame above every idle card */
+[data-member-panel].is-spot { z-index: 41; }      /* active card above its frame */
+
+/* ============================================================
+   Round-41: LinkedIn marks — name arrows replaced by a small
+   LinkedIn logo that lives with each person's description
+   (hover panel on desktop, inline on touch, attribution row
+   in testimonials).
+   ============================================================ */
+
+.li-link { display: inline-flex; margin-top: 12px; }
+.li-link img,
+.panel-li img {
+  width: 18px;
+  height: 18px;
+  border-radius: 3px;
+  display: block;
+  transition: transform 0.16s var(--ease-out);
+}
+.li-link:hover img,
+.panel-li:hover img { transform: scale(1.12); }
+
+/* cards show name+role only — the LinkedIn logo appears in the panel (hover or tap) */
+.member-panels-on .team-grid-4 .team-card > .li-link { display: none; }
+.panel-foot {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 14px;
+}
+.panel-foot .panel-tags { margin-top: 0; }
+/* ============================================================
+   Round-51: mobile connected member card — on phones the panel
+   IS the card: cloned photo + name + role at top, bio + badges
+   below, one frame. Hi-res photo swaps (Vasyl/Jack/Maksymets/
+   Michael) shipped alongside.
+   ============================================================ */
+.member-panel.is-mobile { z-index: 40; }
+.member-panel.is-mobile .panel-head { display: block; margin-bottom: 10px; }
+.member-panel.is-mobile .panel-head .team-photo-wrap { margin-bottom: 12px; }
+.member-panel.is-mobile .panel-head .team-photo {
+  filter: none; /* the open card is in color, like desktop */
+  transform: none;
+}
+.member-panel.is-mobile .panel-head h3 {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  margin: 0 0 2px;
+}
+.member-panel.is-mobile .panel-head .team-role {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--soft);
+  margin: 0 0 10px;
+}
+/* ============================================================
+   Round-65: lightweight 3D cube mosaic — the plate builds from
+   small turning cubes (plain divs, no clones = fast), while the
+   content sweeps in beneath them with one synced diagonal mask.
+   ============================================================ */
+.member-panel .panel-trace { z-index: 7; } /* teal frame above everything */
+.member-panel .panel-body { position: relative; z-index: 2; } /* content above the cubes */
+.member-panel .mosaic-stage {
+  position: absolute;
+  inset: 0;
+  z-index: 1; /* cubes are the plate — under the content */
+  border-radius: inherit;
+  overflow: hidden;
+  perspective: 700px;
+  pointer-events: none;
+}
+.member-panel .mosaic-stage i {
+  position: absolute;
+  display: block;
+  background: var(--white);
+  box-shadow: 0 0 0 0.5px var(--white); /* covers subpixel seams */
+}
+/* while cubes perform, the real plate hides (border stays as the outline
+   the cubes fill in); transition:none kills the panel's own fade */
+.member-panel.is-building {
+  background: transparent;
+  box-shadow: none;
+  transition: none;
+}
+/* the 3D turn — every cube flips in around its own axis */
+@keyframes cube-in {
+  0%   { opacity: 0; transform: rotateY(-90deg); }
+  35%  { opacity: 1; }
+  100% { opacity: 1; transform: rotateY(0deg); }
+}
+@keyframes cube-out {
+  0%   { opacity: 1; transform: rotateY(0deg); }
+  65%  { opacity: 1; }
+  100% { opacity: 0; transform: rotateY(90deg); }
+}
+/* content: a single composited fade timed to the cube wave */
+@keyframes body-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes body-fade-out {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .member-panel .mosaic-stage { display: none; }
+}
+
+/* ============================================================
+   Round-64: while the mobile connected card is open, the black
+   top rules of the grid's cards melt away (and return on close).
+   ============================================================ */
+.team-grid-4 .team-card { transition: border-top-color 0.3s ease; }
+.team-grid-4.is-panel-open .team-card { border-top-color: transparent; }
+
+/* logos inside badge pills (ported follow-up) */
+.team-grid-4 .team-exp a,
+.member-panel .team-exp a { display: inline-flex; align-items: center; gap: 7px; }
+.team-grid-4 .team-exp a img,
+.member-panel .team-exp a img {
+  height: 13px;
+  width: auto;
+  max-width: 56px;
+  object-fit: contain;
+  filter: grayscale(1);
+  opacity: 0.75;
+}
